@@ -5,7 +5,7 @@ FROM ubuntu-debootstrap:wily
 MAINTAINER momon <momon@gmail.com>
 
 ENV ROOTPASSWORD=android \
-    DEBIAN_FRONTEND=noninteractive \
+    DEBIAN_FRONTEND=noninteractive
 
 RUN echo "debconf shared/accepted-oracle-license-v1-1 select true" | debconf-set-selections && \
     echo "debconf shared/accepted-oracle-license-v1-1 seen true" | debconf-set-selections && \
@@ -31,7 +31,7 @@ ENV ANDROID_HOME=/usr/local/android-sdk \
     PATH=$PATH:$ANDROID_HOME/platform-tools \
     ANT_HOME=/usr/local/apache-ant \
     PATH=$PATH:$ANT_HOME/bin \
-    JAVA_HOME=/usr/lib/jvm/java-7-oracle \
+    JAVA_HOME=/usr/lib/jvm/java-7-oracle
 
 RUN cd / && \
     rm -f *gz && \
