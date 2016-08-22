@@ -32,6 +32,13 @@ RUN echo "debconf shared/accepted-oracle-license-v1-1 select true" | debconf-set
     cd / && \
     rm -f *gz && \
     chown -R root:root /usr/local/android-sdk/ && \
+    export ANDROID_HOME=/usr/local/android-sdk && \
+    export PATH=$PATH:$ANDROID_HOME/tools && \
+    export PATH=$PATH:$ANDROID_HOME/platform-tools && \
+    export ANT_HOME=/usr/local/apache-ant && \
+    export PATH=$PATH:$ANT_HOME/bin && \
+    export JAVA_HOME=/usr/lib/jvm/java-7-oracle && \
+    export NOTVISIBLE="in users profile" && \
     echo "y" | android update sdk --filter platform-tool --no-ui --force && \
     echo "y" | android update sdk --filter platform --no-ui --force && \
     echo "y" | android update sdk --filter build-tools-22.0.1 --no-ui -a && \
