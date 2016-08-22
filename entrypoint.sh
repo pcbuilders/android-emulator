@@ -16,7 +16,7 @@ if [[ -n $1 ]]; then
 fi
 
 # Run sshd
-#/usr/sbin/sshd
+/usr/sbin/sshd
 adb start-server
 
 # Detect ip and forward ADB ports outside to outside interface

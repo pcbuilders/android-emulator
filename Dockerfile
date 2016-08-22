@@ -6,19 +6,12 @@ MAINTAINER momon <momon@gmail.com>
 
 ENV ROOTPASSWORD=android \
     DEBIAN_FRONTEND=noninteractive \
-    ANDROID_HOME=/usr/local/android-sdk \
-    PATH=$PATH:$ANDROID_HOME/tools \
-    PATH=$PATH:$ANDROID_HOME/platform-tools \
-    ANT_HOME=/usr/local/apache-ant \
-    PATH=$PATH:$ANT_HOME/bin \
-    JAVA_HOME=/usr/lib/jvm/java-7-oracle \
-    NOTVISIBLE="in users profile"
 
-RUN export DEBIAN_FRONTEND=noninteractive && \
-    echo "debconf shared/accepted-oracle-license-v1-1 select true" | debconf-set-selections && \
+RUN echo "debconf shared/accepted-oracle-license-v1-1 select true" | debconf-set-selections && \
     echo "debconf shared/accepted-oracle-license-v1-1 seen true" | debconf-set-selections && \
     apt-get -y update && \
     apt-get -y install software-properties-common bzip2 net-tools socat ruby-full openssh-server && \
+    mkdir /var/run/sshd && \
     gem install bundler --no-ri --no-rdoc && \
     add-apt-repository ppa:webupd8team/java && \
     apt-get -y update && \
@@ -29,16 +22,20 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
     wget http://archive.apache.org/dist/ant/binaries/apache-ant-1.8.4-bin.tar.gz && \
     tar -xvzf apache-ant-1.8.4-bin.tar.gz && \
     mv apache-ant-1.8.4 /usr/local/apache-ant && \
-    cd / && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
+    apt-get autoremove -y && \
+    apt-get clean
+
+ENV ANDROID_HOME=/usr/local/android-sdk \
+    PATH=$PATH:$ANDROID_HOME/tools \
+    PATH=$PATH:$ANDROID_HOME/platform-tools \
+    ANT_HOME=/usr/local/apache-ant \
+    PATH=$PATH:$ANT_HOME/bin \
+    JAVA_HOME=/usr/lib/jvm/java-7-oracle \
+
+RUN cd / && \
     rm -f *gz && \
     chown -R root:root /usr/local/android-sdk/ && \
-    export ANDROID_HOME=/usr/local/android-sdk && \
-    export PATH=$PATH:$ANDROID_HOME/tools && \
-    export PATH=$PATH:$ANDROID_HOME/platform-tools && \
-    export ANT_HOME=/usr/local/apache-ant && \
-    export PATH=$PATH:$ANT_HOME/bin && \
-    export JAVA_HOME=/usr/lib/jvm/java-7-oracle && \
-    export NOTVISIBLE="in users profile" && \
     echo "y" | android update sdk --filter platform-tool --no-ui --force && \
     echo "y" | android update sdk --filter platform --no-ui --force && \
     echo "y" | android update sdk --filter build-tools-22.0.1 --no-ui -a && \
@@ -53,13 +50,13 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
     touch /usr/local/android-sdk/tools/keymaps/en-us && \
     echo "root:$ROOTPASSWORD" | chpasswd && \
     sed -i 's/PermitRootLogin without-password/PermitRootLogin yes/' /etc/ssh/sshd_config && \
-    sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd && \
-    echo "export VISIBLE=now" >> /etc/profile && \
+    sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
+
+ENV NOTVISIBLE "in users profile"
+
+RUN echo "export VISIBLE=now" >> /etc/profile && \
     wget -O /entrypoint.sh https://raw.githubusercontent.com/pcbuilders/android-emulator/master/entrypoint.sh && \
-    chmod +x /entrypoint.sh && \
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
-    apt-get autoremove -y && \
-    apt-get clean
+    chmod +x /entrypoint.sh
 
 EXPOSE  22 \
         5037 \
