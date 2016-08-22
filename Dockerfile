@@ -1,7 +1,5 @@
-# Android development environment for ubuntu precise (12.04 LTS) (i386).
-# version 0.0.4
+# Android + ruby development environment for ubuntu wily.
 
-# Start with ubuntu 12.04 (i386).
 FROM ubuntu-debootstrap:wily
 
 MAINTAINER momon <momon@gmail.com>
@@ -16,8 +14,7 @@ ENV ROOTPASSWORD=android \
     JAVA_HOME=/usr/lib/jvm/java-7-oracle \
     NOTVISIBLE="in users profile"
 
-RUN export ROOTPASSWORD=android && \
-    export DEBIAN_FRONTEND=noninteractive && \
+RUN export DEBIAN_FRONTEND=noninteractive && \
     echo "debconf shared/accepted-oracle-license-v1-1 select true" | debconf-set-selections && \
     echo "debconf shared/accepted-oracle-license-v1-1 seen true" | debconf-set-selections && \
     apt-get -y update && \
