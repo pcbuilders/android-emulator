@@ -16,7 +16,9 @@ ENV ROOTPASSWORD=android \
     JAVA_HOME=/usr/lib/jvm/java-7-oracle \
     NOTVISIBLE="in users profile"
 
-RUN echo "debconf shared/accepted-oracle-license-v1-1 select true" | debconf-set-selections && \
+RUN export ROOTPASSWORD=android && \
+    export DEBIAN_FRONTEND=noninteractive && \
+    echo "debconf shared/accepted-oracle-license-v1-1 select true" | debconf-set-selections && \
     echo "debconf shared/accepted-oracle-license-v1-1 seen true" | debconf-set-selections && \
     apt-get -y update && \
     apt-get -y install software-properties-common bzip2 net-tools socat ruby-full openssh-server && \
