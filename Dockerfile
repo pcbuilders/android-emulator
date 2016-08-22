@@ -2,35 +2,33 @@
 # version 0.0.4
 
 # Start with ubuntu 12.04 (i386).
-FROM ubuntu:14.04
+FROM ubuntu-debootstrap:wily
 
 MAINTAINER momon <momon@gmail.com>
 
-RUN export ROOTPASSWORD=android && \
-    export DEBIAN_FRONTEND=noninteractive && \
-    echo "debconf shared/accepted-oracle-license-v1-1 select true" | debconf-set-selections && \
+ENV ROOTPASSWORD=android \
+    DEBIAN_FRONTEND=noninteractive \
+    ANDROID_HOME=/usr/local/android-sdk \
+    PATH=$PATH:$ANDROID_HOME/tools \
+    PATH=$PATH:$ANDROID_HOME/platform-tools \
+    ANT_HOME=/usr/local/apache-ant \
+    PATH=$PATH:$ANT_HOME/bin \
+    JAVA_HOME=/usr/lib/jvm/java-7-oracle \
+    NOTVISIBLE="in users profile"
+
+RUN echo "debconf shared/accepted-oracle-license-v1-1 select true" | debconf-set-selections && \
     echo "debconf shared/accepted-oracle-license-v1-1 seen true" | debconf-set-selections && \
     apt-get -y update && \
-    apt-get -y install python-software-properties bzip2 ssh net-tools socat && \
+    apt-get -y install python-software-properties-common bzip2 net-tools socat ruby-full && \
     add-apt-repository ppa:webupd8team/java && \
     apt-get -y update && \
     apt-get -y install oracle-java7-installer && \
-    apt-get install -y openssh-server git openssh-client curl && \
-    apt-get install -y nano && \
-    apt-get install -y build-essential && \
-    apt-get install -y openssl libreadline6 libreadline6-dev curl zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev ncurses-dev automake libtool bison subversion pkg-config && \
     wget http://dl.google.com/android/android-sdk_r23-linux.tgz && \
     tar -xvzf android-sdk_r23-linux.tgz && \
     mv android-sdk-linux /usr/local/android-sdk && \
     wget http://archive.apache.org/dist/ant/binaries/apache-ant-1.8.4-bin.tar.gz && \
     tar -xvzf apache-ant-1.8.4-bin.tar.gz && \
     mv apache-ant-1.8.4 /usr/local/apache-ant && \
-    export ANDROID_HOME=/usr/local/android-sdk && \
-    export PATH=$PATH:$ANDROID_HOME/tools && \
-    export PATH=$PATH:$ANDROID_HOME/platform-tools && \
-    export ANT_HOME=/usr/local/apache-ant && \
-    export PATH=$PATH:$ANT_HOME/bin && \
-    export JAVA_HOME=/usr/lib/jvm/java-7-oracle && \
     cd / && \
     rm -f *gz && \
     chown -R root:root /usr/local/android-sdk/ && \
@@ -46,31 +44,16 @@ RUN export ROOTPASSWORD=android && \
     echo "y" | android update adb && \
     mkdir /usr/local/android-sdk/tools/keymaps && \
     touch /usr/local/android-sdk/tools/keymaps/en-us && \
-    mkdir /var/run/sshd && \
     echo "root:$ROOTPASSWORD" | chpasswd && \
     sed -i 's/PermitRootLogin without-password/PermitRootLogin yes/' /etc/ssh/sshd_config && \
     sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd && \
-    export NOTVISIBLE="in users profile" && \
     echo "export VISIBLE=now" >> /etc/profile && \
     wget -O /entrypoint.sh https://raw.githubusercontent.com/pcbuilders/android-emulator/master/entrypoint.sh && \
     chmod +x /entrypoint.sh && \
-    curl -L https://get.rvm.io | bash -s stable && \
-    /bin/bash -l -c "rvm requirements" && \
-    /bin/bash -l -c "rvm install 2.0" && \
     /bin/bash -l -c "gem install bundler --no-ri --no-rdoc" && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
     apt-get autoremove -y && \
     apt-get clean
-
-ENV ROOTPASSWORD=android \
-    DEBIAN_FRONTEND=noninteractive \
-    ANDROID_HOME=/usr/local/android-sdk \
-    PATH=$PATH:$ANDROID_HOME/tools \
-    PATH=$PATH:$ANDROID_HOME/platform-tools \
-    ANT_HOME=/usr/local/apache-ant \
-    PATH=$PATH:$ANT_HOME/bin \
-    JAVA_HOME=/usr/lib/jvm/java-7-oracle \
-    NOTVISIBLE="in users profile"
 
 EXPOSE  22 \
         5037 \
