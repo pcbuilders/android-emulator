@@ -19,7 +19,8 @@ ENV ROOTPASSWORD=android \
 RUN echo "debconf shared/accepted-oracle-license-v1-1 select true" | debconf-set-selections && \
     echo "debconf shared/accepted-oracle-license-v1-1 seen true" | debconf-set-selections && \
     apt-get -y update && \
-    apt-get -y install software-properties-common bzip2 net-tools socat ruby-full && \
+    apt-get -y install software-properties-common bzip2 net-tools socat ruby-full openssh-server && \
+    gem install bundler --no-ri --no-rdoc && \
     add-apt-repository ppa:webupd8team/java && \
     apt-get -y update && \
     apt-get -y install oracle-java7-installer && \
@@ -57,7 +58,6 @@ RUN echo "debconf shared/accepted-oracle-license-v1-1 select true" | debconf-set
     echo "export VISIBLE=now" >> /etc/profile && \
     wget -O /entrypoint.sh https://raw.githubusercontent.com/pcbuilders/android-emulator/master/entrypoint.sh && \
     chmod +x /entrypoint.sh && \
-    gem install bundler --no-ri --no-rdoc && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
     apt-get autoremove -y && \
     apt-get clean
