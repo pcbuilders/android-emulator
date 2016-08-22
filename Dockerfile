@@ -16,7 +16,7 @@ RUN export ROOTPASSWORD=android && \
     echo "deb http://archive.ubuntu.com/ubuntu precise main universe" > /etc/apt/sources.list && \
     apt-get update && \
     apt-get -y install oracle-java7-installer && \
-    apt-get install -y nginx openssh-server git-core openssh-client curl && \
+    apt-get install -y openssh-server git openssh-client curl && \
     apt-get install -y nano && \
     apt-get install -y build-essential && \
     apt-get install -y openssl libreadline6 libreadline6-dev curl zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev ncurses-dev automake libtool bison subversion pkg-config && \
