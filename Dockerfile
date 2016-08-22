@@ -1,7 +1,7 @@
 # Android development environment for ubuntu precise (12.04 LTS) (i386).
 # version 0.0.4
 
-# Start with ubuntu 14.04 (i386).
+# Start with ubuntu 12.04 (i386).
 FROM ubuntu:14.04
 
 MAINTAINER momon <momon@gmail.com>
@@ -13,9 +13,8 @@ RUN export ROOTPASSWORD=android && \
     apt-get -y update && \
     apt-get -y install python-software-properties bzip2 ssh net-tools socat && \
     add-apt-repository ppa:webupd8team/java && \
-    echo "deb http://archive.ubuntu.com/ubuntu trusty main universe" > /etc/apt/sources.list && \
     apt-get -y update && \
-    apt-get -y install oracle-java8-installer && \
+    apt-get -y install oracle-java7-installer && \
     apt-get install -y openssh-server git openssh-client curl && \
     apt-get install -y nano && \
     apt-get install -y build-essential && \
