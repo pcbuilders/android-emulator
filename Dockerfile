@@ -26,12 +26,12 @@ RUN echo "debconf shared/accepted-oracle-license-v1-1 select true" | debconf-set
     apt-get autoremove -y && \
     apt-get clean
 
-ENV ANDROID_HOME=/usr/local/android-sdk \
-    PATH=$PATH:$ANDROID_HOME/tools \
-    PATH=$PATH:$ANDROID_HOME/platform-tools \
-    ANT_HOME=/usr/local/apache-ant \
-    PATH=$PATH:$ANT_HOME/bin \
-    JAVA_HOME=/usr/lib/jvm/java-7-oracle
+ENV ANDROID_HOME /usr/local/android-sdk
+ENV PATH $PATH:$ANDROID_HOME/tools
+ENV PATH $PATH:$ANDROID_HOME/platform-tools
+ENV ANT_HOME /usr/local/apache-ant
+ENV PATH $PATH:$ANT_HOME/bin
+ENV JAVA_HOME /usr/lib/jvm/java-7-oracle
 
 RUN cd / && \
     rm -f *gz && \
