@@ -14,7 +14,7 @@ ENV PUBLIC_KEY='' \
 
 ADD entrypoint.sh /entrypoint.sh
 
-ARG DEBIAN_FRONTEND noninteractive
+ARG DEBIAN_FRONTEND=noninteractive
 
 RUN chmod +x /entrypoint.sh && \
     echo "debconf shared/accepted-oracle-license-v1-1 select true" | debconf-set-selections && \
