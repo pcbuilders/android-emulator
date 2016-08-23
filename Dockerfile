@@ -26,8 +26,8 @@ RUN chmod +x /entrypoint.sh && \
     apt-get -y -qq update && \
     apt-get -y -qq install oracle-java7-installer && \
     mkdir -p {$ANDROID_HOME,$ANT_HOME} && \
-    wget -qO- http://dl.google.com/android/android-sdk_r23-linux.tgz | tar xz -C $ANDROID_HOME  --strip-components=1 && \
-    wget -qO- http://archive.apache.org/dist/ant/binaries/apache-ant-1.8.4-bin.tar.gz | tar xz -C $ANT_HOME      --strip-components=1 && \
+    wget -qO- http://dl.google.com/android/android-sdk_r23-linux.tgz | tar xz -C $ANDROID_HOME --strip-components=1 && \
+    wget -qO- http://archive.apache.org/dist/ant/binaries/apache-ant-1.8.4-bin.tar.gz | tar xz -C $ANT_HOME --strip-components=1 && \
     chown -R root:root $ANDROID_HOME && \
     echo "y" | android update sdk --filter platform-tool --no-ui --force && \
     echo "y" | android update sdk --filter platform --no-ui --force && \
