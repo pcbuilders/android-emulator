@@ -44,6 +44,7 @@ RUN echo "y" | android update sdk --filter platform-tool --no-ui --force && \
     touch ${ANDROID_HOME}/tools/keymaps/en-us && \
     echo "root:android" | chpasswd && \
     sed -i 's/PermitRootLogin without-password/PermitRootLogin yes/' /etc/ssh/sshd_config && \
+    echo -e "\nANDROID_HOME=/usr/local/android-sdk\nANT_HOME=/usr/local/apache-ant\nJAVA_HOME=/usr/lib/jvm/java-7-oracle\nPATH=$PATH:/usr/local/android-sdk/tools:/usr/local/android-sdk/platform-tools:/usr/local/apache-ant/bin" >> /etc/env* && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
     apt-get autoremove -y && \
     apt-get clean
