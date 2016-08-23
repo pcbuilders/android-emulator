@@ -25,17 +25,17 @@ RUN chmod +x /entrypoint.sh && \
     add-apt-repository ppa:webupd8team/java && \
     apt-get -y update && \
     apt-get -y install oracle-java7-installer && \
-    mkdir $ANDROID_HOME $ANT_HOME && \
-    wget -qO- http://dl.google.com/android/android-sdk_r23-linux.tgz | tar xz -C $ANDROID_HOME --strip-components=1 && \
-    wget -qO- http://archive.apache.org/dist/ant/binaries/apache-ant-1.8.4-bin.tar.gz | tar xz -C $ANT_HOME --strip-components=1 && \
-    chown -R root:root $ANDROID_HOME && \
+    mkdir ${ANDROID_HOME} ${ANT_HOME} && \
+    wget -qO- http://dl.google.com/android/android-sdk_r23-linux.tgz | tar xz -C ${ANDROID_HOME} --strip-components=1 && \
+    wget -qO- http://archive.apache.org/dist/ant/binaries/apache-ant-1.8.4-bin.tar.gz | tar xz -C ${ANT_HOME} --strip-components=1 && \
+    chown -R root:root ${ANDROID_HOME} && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
     apt-get autoremove -y && \
     apt-get clean
 
-ENV PATH=$PATH:$ANDROID_HOME/tools \
-    PATH=$PATH:$ANDROID_HOME/platform-tools \
-    PATH=$PATH:$ANT_HOME/bin
+ENV PATH="${ANDROID_HOME}/tools:${PATH}" \
+    PATH="${ANDROID_HOME}/platform-tools:${PATH}" \
+    PATH="$ANT_HOME/bin:${PATH}"
 
 RUN echo "y" | android update sdk --filter platform-tool --no-ui --force && \
     echo "y" | android update sdk --filter platform --no-ui --force && \
@@ -47,10 +47,10 @@ RUN echo "y" | android update sdk --filter platform-tool --no-ui --force && \
     echo "y" | android update sdk --filter sys-img-armeabi-v7a-android-21 --no-ui -a && \
     echo "y" | android update sdk --filter sys-img-armeabi-v7a-android-22 --no-ui -a && \
     echo "y" | android update adb && \
-    mkdir $ANDROID_HOME/tools/keymaps && \
-    touch $ANDROID_HOME/android-sdk/tools/keymaps/en-us && \
+    mkdir ${ANDROID_HOME}/tools/keymaps && \
+    touch ${ANDROID_HOME}/android-sdk/tools/keymaps/en-us && \
     mkdir ~/.ssh && \
-    echo $PUBLIC_KEY > ~/.ssh/authorized_keys && \
+    echo ${PUBLIC_KEY} > ~/.ssh/authorized_keys && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
     apt-get autoremove -y && \
     apt-get clean
