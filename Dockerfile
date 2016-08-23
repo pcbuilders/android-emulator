@@ -10,6 +10,8 @@ ARG DEBIAN_FRONTEND=noninteractive
 
 ARG PUBLIC_KEY
 
+WORKDIR /root
+
 RUN chmod +x /entrypoint.sh && \
     echo "debconf shared/accepted-oracle-license-v1-1 select true" | debconf-set-selections && \
     echo "debconf shared/accepted-oracle-license-v1-1 seen true" | debconf-set-selections && \
