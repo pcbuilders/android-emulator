@@ -8,6 +8,8 @@ ADD entrypoint.sh /entrypoint.sh
 
 ARG DEBIAN_FRONTEND=noninteractive
 
+ARG PUBLIC_KEY
+
 RUN chmod +x /entrypoint.sh && \
     echo "debconf shared/accepted-oracle-license-v1-1 select true" | debconf-set-selections && \
     echo "debconf shared/accepted-oracle-license-v1-1 seen true" | debconf-set-selections && \
@@ -25,8 +27,7 @@ RUN chmod +x /entrypoint.sh && \
     apt-get autoremove -y && \
     apt-get clean
 
-ENV PUBLIC_KEY='' \
-    ANDROID_HOME=/usr/local/android-sdk \
+ENV ANDROID_HOME=/usr/local/android-sdk \
     ANT_HOME=/usr/local/apache-ant \
     JAVA_HOME=/usr/lib/jvm/java-7-oracle \
     PATH=$PATH:/usr/local/android-sdk/tools:/usr/local/android-sdk/platform-tools:/usr/local/apache-ant/bin
