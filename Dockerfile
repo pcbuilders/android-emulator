@@ -43,6 +43,7 @@ RUN echo "y" | android update sdk --filter platform-tool --no-ui --force && \
     mkdir ${ANDROID_HOME}/tools/keymaps && \
     touch ${ANDROID_HOME}/tools/keymaps/en-us && \
     echo "root:android" | chpasswd && \
+    sed -i 's/PermitRootLogin without-password/PermitRootLogin yes/' /etc/ssh/sshd_config && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
     apt-get autoremove -y && \
     apt-get clean
