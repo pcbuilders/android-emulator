@@ -4,14 +4,6 @@ FROM ubuntu-debootstrap:wily
 
 MAINTAINER momon <momon@gmail.com>
 
-ENV PUBLIC_KEY='' \
-    ANDROID_HOME=/usr/local/android-sdk \
-    PATH=$PATH:/usr/local/android-sdk/tools \
-    PATH=$PATH:/usr/local/android-sdk/platform-tools \
-    ANT_HOME=/usr/local/apache-ant \
-    PATH=$PATH:/usr/local/apache-ant/bin \
-    JAVA_HOME=/usr/lib/jvm/java-7-oracle
-
 ADD entrypoint.sh /entrypoint.sh
 
 ARG DEBIAN_FRONTEND=noninteractive
@@ -25,17 +17,21 @@ RUN chmod +x /entrypoint.sh && \
     add-apt-repository ppa:webupd8team/java && \
     apt-get -y update && \
     apt-get -y install oracle-java7-installer && \
-    mkdir ${ANDROID_HOME} ${ANT_HOME} && \
-    wget -qO- http://dl.google.com/android/android-sdk_r23-linux.tgz | tar xz -C ${ANDROID_HOME} --strip-components=1 && \
-    wget -qO- http://archive.apache.org/dist/ant/binaries/apache-ant-1.8.4-bin.tar.gz | tar xz -C ${ANT_HOME} --strip-components=1 && \
-    chown -R root:root ${ANDROID_HOME} && \
+    mkdir /usr/local/android-sdk /usr/local/apache-ant && \
+    wget -qO- http://dl.google.com/android/android-sdk_r23-linux.tgz | tar xz -C /usr/local/android-sdk --strip-components=1 && \
+    wget -qO- http://archive.apache.org/dist/ant/binaries/apache-ant-1.8.4-bin.tar.gz | tar xz -C /usr/local/apache-ant --strip-components=1 && \
+    chown -R root:root /usr/local/android-sdk && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
     apt-get autoremove -y && \
     apt-get clean
 
-ENV PATH="${ANDROID_HOME}/tools:${PATH}" \
-    PATH="${ANDROID_HOME}/platform-tools:${PATH}" \
-    PATH="$ANT_HOME/bin:${PATH}"
+ENV PUBLIC_KEY='' \
+    ANDROID_HOME=/usr/local/android-sdk \
+    PATH=$PATH:/usr/local/android-sdk/tools \
+    PATH=$PATH:/usr/local/android-sdk/platform-tools \
+    ANT_HOME=/usr/local/apache-ant \
+    PATH=$PATH:/usr/local/apache-ant/bin \
+    JAVA_HOME=/usr/lib/jvm/java-7-oracle
 
 RUN echo "y" | android update sdk --filter platform-tool --no-ui --force && \
     echo "y" | android update sdk --filter platform --no-ui --force && \
