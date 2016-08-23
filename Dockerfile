@@ -42,9 +42,9 @@ RUN echo "y" | android update sdk --filter platform-tool --no-ui --force && \
     echo "y" | android update sdk --filter sys-img-armeabi-v7a-android-22 --no-ui -a && \
     echo "y" | android update adb && \
     mkdir ${ANDROID_HOME}/tools/keymaps && \
-    touch ${ANDROID_HOME}/android-sdk/tools/keymaps/en-us && \
-    mkdir ~/.ssh && \
-    echo ${PUBLIC_KEY} > ~/.ssh/authorized_keys && \
+    touch ${ANDROID_HOME}/tools/keymaps/en-us && \
+    mkdir ${HOME}/.ssh && \
+    echo ${PUBLIC_KEY} > ${HOME}/.ssh/authorized_keys && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
     apt-get autoremove -y && \
     apt-get clean
