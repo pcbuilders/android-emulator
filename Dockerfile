@@ -28,8 +28,8 @@ RUN chmod +x /entrypoint.sh && \
 ENV PUBLIC_KEY='' \
     ANDROID_HOME=/usr/local/android-sdk \
     ANT_HOME=/usr/local/apache-ant \
-    JAVA_HOME=/usr/lib/jvm/java-7-oracle
-    PATH=$PATH:/usr/local/android-sdk/tools:/usr/local/android-sdk/platform-tools:/usr/local/apache-ant/bin \
+    JAVA_HOME=/usr/lib/jvm/java-7-oracle \
+    PATH=$PATH:/usr/local/android-sdk/tools:/usr/local/android-sdk/platform-tools:/usr/local/apache-ant/bin
 
 RUN echo "y" | android update sdk --filter platform-tool --no-ui --force && \
     echo "y" | android update sdk --filter platform --no-ui --force && \
