@@ -8,10 +8,6 @@ ADD entrypoint.sh /entrypoint.sh
 
 ARG DEBIAN_FRONTEND=noninteractive
 
-ARG PUBLIC_KEY
-
-WORKDIR /root
-
 RUN chmod +x /entrypoint.sh && \
     echo "debconf shared/accepted-oracle-license-v1-1 select true" | debconf-set-selections && \
     echo "debconf shared/accepted-oracle-license-v1-1 seen true" | debconf-set-selections && \
@@ -46,8 +42,7 @@ RUN echo "y" | android update sdk --filter platform-tool --no-ui --force && \
     echo "y" | android update adb && \
     mkdir ${ANDROID_HOME}/tools/keymaps && \
     touch ${ANDROID_HOME}/tools/keymaps/en-us && \
-    mkdir ${HOME}/.ssh && \
-    echo ${PUBLIC_KEY} > ${HOME}/.ssh/authorized_keys && \
+    echo "root:android" | chpasswd && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
     apt-get autoremove -y && \
     apt-get clean
