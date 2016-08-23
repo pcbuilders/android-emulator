@@ -12,9 +12,9 @@ ENV PUBLIC_KEY='' \
     PATH=$PATH:/usr/local/apache-ant/bin \
     JAVA_HOME=/usr/lib/jvm/java-7-oracle
 
-ARG DEBIAN_FRONTEND noninteractive
-
 ADD entrypoint.sh /entrypoint.sh
+
+ARG DEBIAN_FRONTEND noninteractive
 
 RUN chmod +x /entrypoint.sh && \
     echo "debconf shared/accepted-oracle-license-v1-1 select true" | debconf-set-selections && \
